@@ -5,6 +5,9 @@
   "references": [
     {
       "path": "./apps/finni"
+    },
+    {
+      "path": "./apps/finni-be"
     }
   ]
 }

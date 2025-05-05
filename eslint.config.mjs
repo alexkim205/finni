@@ -1,6 +1,8 @@
 import nx from '@nx/eslint-plugin';
+import pluginQuery from '@tanstack/eslint-plugin-query'
 
 export default [
+  ...pluginQuery.configs['flat/recommended'],
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
