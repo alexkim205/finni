@@ -1,22 +1,14 @@
 import { SERVER_URL } from '../helpers/constants';
-import {AgeRangeType, PatientType, ProviderType, StatusType} from "./types";
+import {
+  GetPatientRequest, GetPatientResponse,
+  GetPatientsRequest,
+  GetPatientsResponse,
+  ProviderType,
+  ResponseMixin,
+} from './types';
 import {objectToUrlParams} from "../helpers/utils";
 
-export interface GetPatientsRequest {
-  filters?: Partial<{
-    name: string;
-    ageRange: AgeRangeType;
-    state: string;
-    exUnitedStates: boolean; // outside of US
-    status: StatusType
-  }>
-}
-
-export interface GetPatientRequest {
-  patientId: PatientType["id"];
-}
-
-export async function getPatients({filters}: GetPatientsRequest): Promise<PatientType[]> {
+export async function getPatients({filters}: GetPatientsRequest): Promise<GetPatientsResponse> {
   const searchParams = new URLSearchParams(objectToUrlParams(filters ?? {}));
   const response = await fetch(
     `${SERVER_URL}/patients?${searchParams.toString()}`,
@@ -24,17 +16,17 @@ export async function getPatients({filters}: GetPatientsRequest): Promise<Patien
   if (!response.ok) {
     throw new Error('There was an error fetching patients')
   }
-  return await response.json()
+  return (await response.json()).patients
 }
 
-export async function getPatient({patientId}: GetPatientRequest): Promise<PatientType> {
+export async function getPatient({patientId}: GetPatientRequest): Promise<GetPatientResponse> {
   const response = await fetch(
     `${SERVER_URL}/patients/${patientId}`,
   )
   if (!response.ok) {
     throw new Error(`There was an error fetching patient: ${patientId}`)
   }
-  return await response.json()
+  return (await response.json()).patient
 }
 
 export async function getMe(): Promise<ProviderType> {
@@ -44,7 +36,7 @@ export async function getMe(): Promise<ProviderType> {
   if (!response.ok) {
     throw new Error('There was an error fetching current user')
   }
-  return await response.json()
+  return (await response.json()).data
 }
 
 export interface LoginRequest {
@@ -61,7 +53,20 @@ export async function login(props: LoginRequest): Promise<ProviderType> {
     },
   )
   if (!response.ok) {
-    throw new Error('There was an error fetching current user')
+    throw new Error('There was an error logging in')
+  }
+  return (await response.json()).data
+}
+
+export async function logout(): Promise<ResponseMixin> {
+  const response = await fetch(
+    `${SERVER_URL}/logout`,
+    {
+      method: 'POST',
+    },
+  )
+  if (!response.ok) {
+    throw new Error('There was an error logging out')
   }
   return await response.json()
 }

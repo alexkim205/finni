@@ -23,4 +23,10 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.post('/logout', (req, res) => {
+  res.json({
+    ok: true,
+  });
+});
+
 export default router

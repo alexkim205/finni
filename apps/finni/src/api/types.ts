@@ -38,3 +38,29 @@ export interface ProviderType {
   lastName: string;
   email: string
 }
+
+export interface ResponseMixin {
+  ok: boolean;
+}
+
+export interface GetPatientsRequest {
+  filters?: Partial<{
+    name: string;
+    ageRange: AgeRangeType;
+    state: string;
+    exUnitedStates: boolean; // outside of US
+    status: StatusType
+  }>
+}
+
+export interface GetPatientRequest {
+  patientId: PatientType["id"];
+}
+
+export interface GetPatientsResponse extends GetPatientsRequest, ResponseMixin {
+  patients: PatientType[]
+}
+
+export interface GetPatientResponse extends ResponseMixin {
+  patient: PatientType
+}

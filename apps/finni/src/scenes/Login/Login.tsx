@@ -22,6 +22,8 @@ export function Login() {
     await login.mutateAsync(getValues());
   }
 
+  console.log("errors", errors)
+
   return (
     <div className="h-screen w-screen flex justify-center items-center bg-slate-100">
       <form
@@ -38,11 +40,11 @@ export function Login() {
           type="email"
           required
           {...register('email', {
-            required: 'Email address is required',
+            required: true,
             minLength: 1,
           })}
           isInvalid={!!errors.email}
-          errorMessage={errors.email?.message?.toString()}
+          errorMessage={errors.email ? "Email address is invalid" : ""}
         />
         <Input
           label="Password"
@@ -53,11 +55,11 @@ export function Login() {
           type="password"
           required
           {...register('password', {
-            required: 'Password is required',
+            required: true,
             minLength: 6,
           })}
           isInvalid={!!errors.password}
-          errorMessage={errors.password?.message?.toString()}
+          errorMessage={errors.password ? "Password must be >= 6 characters": ""}
         />
         <Button
           radius="sm"
