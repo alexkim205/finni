@@ -2,7 +2,7 @@
 
 Hi Yilun, Eloi, and Jacob. Here is my take on the new patient health dashboard interview. This was a fun exercise and I found myself getting carried away by it, but it was getting late and I wanted to submit something!
 
-[recording.mov](assets/recording.mov)
+![recording.gif](assets/recording.gif)
 
 There were a bunch of things I couldn't get to like error notifications, auth, and caching, but maybe I can step through how I would implement some of these in the followup retro interview?
 
