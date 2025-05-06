@@ -2,7 +2,7 @@ import { Button, Input } from '@heroui/react';
 import { useLoginMutation } from '../../api/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { LoginRequest } from '../../api/api';
+import { LoginRequest } from '../../api/types';
 
 export function Login() {
   const navigate = useNavigate();

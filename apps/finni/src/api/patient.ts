@@ -1,10 +1,9 @@
 import { SERVER_URL } from '../helpers/constants';
 import {
+  CreatePatientRequest, DeletePatientRequest,
   GetPatientRequest, GetPatientResponse,
   GetPatientsRequest,
-  GetPatientsResponse,
-  ProviderType,
-  ResponseMixin,
+  GetPatientsResponse, ResponseMixin, UpdatePatientRequest
 } from './types';
 import {objectToUrlParams} from "../helpers/utils";
 
@@ -29,44 +28,43 @@ export async function getPatient({patientId}: GetPatientRequest): Promise<GetPat
   return (await response.json()).patient
 }
 
-export async function getMe(): Promise<ProviderType> {
+export async function createPatient(props: CreatePatientRequest): Promise<GetPatientResponse> {
   const response = await fetch(
-    `${SERVER_URL}/me`,
-  )
-  if (!response.ok) {
-    throw new Error('There was an error fetching current user')
-  }
-  return (await response.json()).data
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export async function login(props: LoginRequest): Promise<ProviderType> {
-  const response = await fetch(
-    `${SERVER_URL}/login`,
+    `${SERVER_URL}/patients`,
     {
-      method: 'POST',
-      body: JSON.stringify(props)
-    },
+      method: "POST",
+      body: JSON.stringify(props),
+    }
   )
   if (!response.ok) {
-    throw new Error('There was an error logging in')
+    throw new Error(`There was an error creating patient.`)
   }
-  return (await response.json()).data
+  return (await response.json()).patient
 }
 
-export async function logout(): Promise<ResponseMixin> {
+export async function updatePatient(props: UpdatePatientRequest): Promise<GetPatientResponse> {
   const response = await fetch(
-    `${SERVER_URL}/logout`,
+    `${SERVER_URL}/patients`,
     {
-      method: 'POST',
-    },
+      method: "PUT",
+      body: JSON.stringify(props),
+    }
   )
   if (!response.ok) {
-    throw new Error('There was an error logging out')
+    throw new Error(`There was an error updating patient.`)
+  }
+  return (await response.json()).patient
+}
+
+export async function deletePatient({patientId}: DeletePatientRequest): Promise<ResponseMixin> {
+  const response = await fetch(
+    `${SERVER_URL}/patients/${patientId}`,
+    {
+      method:"DELETE"
+    }
+  )
+  if (!response.ok) {
+    throw new Error(`There was an error deleting patient: ${patientId}`)
   }
   return await response.json()
 }

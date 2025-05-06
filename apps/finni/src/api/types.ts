@@ -39,6 +39,11 @@ export interface ProviderType {
   email: string
 }
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
 export interface ResponseMixin {
   ok: boolean;
 }
@@ -64,3 +69,9 @@ export interface GetPatientsResponse extends GetPatientsRequest, ResponseMixin {
 export interface GetPatientResponse extends ResponseMixin {
   patient: PatientType
 }
+
+export type CreatePatientRequest = Omit<PatientType, "id">
+
+export type UpdatePatientRequest = Partial<CreatePatientRequest>
+
+export type DeletePatientRequest = GetPatientRequest
