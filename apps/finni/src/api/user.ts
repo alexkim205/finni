@@ -7,7 +7,7 @@ import {
 
 export async function getMe(): Promise<ProviderType> {
   const response = await fetch(
-    `${SERVER_URL}/me`,
+    `${SERVER_URL}/auth/me`,
   )
   if (!response.ok) {
     throw new Error('There was an error fetching current user')
@@ -17,7 +17,7 @@ export async function getMe(): Promise<ProviderType> {
 
 export async function login(props: LoginRequest): Promise<ProviderType> {
   const response = await fetch(
-    `${SERVER_URL}/login`,
+    `${SERVER_URL}/auth/login`,
     {
       method: 'POST',
       body: JSON.stringify(props)
@@ -31,7 +31,7 @@ export async function login(props: LoginRequest): Promise<ProviderType> {
 
 export async function logout(): Promise<ResponseMixin> {
   const response = await fetch(
-    `${SERVER_URL}/logout`,
+    `${SERVER_URL}/auth/logout`,
     {
       method: 'POST',
     },

@@ -16,7 +16,18 @@ module.exports = {
     ),
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'natural-black': {
+          200: '#dcdcdc',
+          400: '#bcb9ba',
+          600: '#9c969a',
+          800: '#7a7377',
+          1000: '#585055',
+          DEFAULT: '#585055',
+        },
+      }
+    },
   },
   darkMode: "class",
   plugins: [

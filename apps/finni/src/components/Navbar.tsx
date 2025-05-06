@@ -1,5 +1,5 @@
 import {
-  Avatar,
+  Avatar, Button,
   Image,
   Link,
   Listbox,
@@ -11,10 +11,11 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Skeleton,
+  Skeleton
 } from '@heroui/react';
 import { useLogoutMutation, useMeQuery } from '../api/hooks';
 import { useNavigate } from 'react-router-dom';
+import { FaPlus } from 'react-icons/fa6';
 
 export function Navbar() {
   return (
@@ -23,13 +24,13 @@ export function Navbar() {
         <Image className="rounded-none" src="https://cdn.prod.website-files.com/6297d5d89ac9c5b4308579e1/6297d5d89ac9c550828579f0_Logo.svg" />
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="/">
-            Dashboard
-          </Link>
-        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
+        <NavbarItem>
+          <Link color="foreground" href="/dashboard">
+            <Button className="text-natural-black" variant="light" size="lg" startContent={<FaPlus size={16}/>}>Add patient</Button>
+          </Link>
+        </NavbarItem>
         <NavbarItem>
           <ProfileCircle />
         </NavbarItem>

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export enum StatusType {
   Inquiry = "inquiry",
   Onboarding = "onboarding",
@@ -19,11 +21,11 @@ export interface PatientType {
   firstName: string;
   middleName?: string;
   lastName: string;
-  dateOfBirth: string;
+  dateOfBirth: dayjs.Dayjs;
   status: StatusType
   address: {
     line1: string;
-    line2: string;
+    line2?: string;
     city: string; // filterable
     state: string; // filterable
     country: string; // filterable
@@ -59,16 +61,14 @@ export interface GetPatientsRequest {
 }
 
 export interface GetPatientRequest {
-  patientId: PatientType["id"];
+  patientId: PatientType["id"] | null;
 }
 
 export interface GetPatientsResponse extends GetPatientsRequest, ResponseMixin {
-  patients: PatientType[]
+  data: PatientType[]
 }
 
-export interface GetPatientResponse extends ResponseMixin {
-  patient: PatientType
-}
+export type GetPatientResponse = Partial<PatientType>
 
 export type CreatePatientRequest = Omit<PatientType, "id">
 

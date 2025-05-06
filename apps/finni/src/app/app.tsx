@@ -5,12 +5,14 @@ import {
 import {Dashboard} from "../scenes/Dashboard/Dashboard";
 import {HeroUIProvider} from "@heroui/react";
 import { Login } from '../scenes/Login/Login';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient()
 
 export function App() {
   return (
     <HeroUIProvider>
+      <Toaster/>
     <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path="/login" element={<Login/>} />

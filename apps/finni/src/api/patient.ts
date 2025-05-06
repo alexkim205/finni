@@ -15,17 +15,20 @@ export async function getPatients({filters}: GetPatientsRequest): Promise<GetPat
   if (!response.ok) {
     throw new Error('There was an error fetching patients')
   }
-  return (await response.json()).patients
+  return await response.json()
 }
 
 export async function getPatient({patientId}: GetPatientRequest): Promise<GetPatientResponse> {
+  if (!patientId) {
+    return {}
+  }
   const response = await fetch(
     `${SERVER_URL}/patients/${patientId}`,
   )
   if (!response.ok) {
     throw new Error(`There was an error fetching patient: ${patientId}`)
   }
-  return (await response.json()).patient
+  return (await response.json()).data
 }
 
 export async function createPatient(props: CreatePatientRequest): Promise<GetPatientResponse> {
@@ -39,7 +42,7 @@ export async function createPatient(props: CreatePatientRequest): Promise<GetPat
   if (!response.ok) {
     throw new Error(`There was an error creating patient.`)
   }
-  return (await response.json()).patient
+  return (await response.json()).data
 }
 
 export async function updatePatient(props: UpdatePatientRequest): Promise<GetPatientResponse> {
@@ -53,7 +56,7 @@ export async function updatePatient(props: UpdatePatientRequest): Promise<GetPat
   if (!response.ok) {
     throw new Error(`There was an error updating patient.`)
   }
-  return (await response.json()).patient
+  return (await response.json()).data
 }
 
 export async function deletePatient({patientId}: DeletePatientRequest): Promise<ResponseMixin> {
