@@ -1,25 +1,28 @@
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import {
   QueryClient, QueryClientProvider,
 } from '@tanstack/react-query'
+import {Dashboard} from "../scenes/Dashboard/Dashboard";
+import {HeroUIProvider} from "@heroui/react";
+import { Login } from '../scenes/Login/Login';
 
 const queryClient = new QueryClient()
 
 export function App() {
   return (
+    <HeroUIProvider>
     <QueryClientProvider client={queryClient}>
-      <Routes>
-        <Route
-          path="/dashboard"
-          element={
-            <div className="bg-green-500">
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-      </Routes>
+        <Routes>
+          <Route path="/login" element={<Login/>} />
+          <Route
+            path="/dashboard"
+            element={
+              <Dashboard/>
+            }
+          />
+        </Routes>
     </QueryClientProvider>
+    </HeroUIProvider>
   );
 }
 

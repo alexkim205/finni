@@ -1,7 +1,6 @@
 export const IS_DEVELOPMENT =
-  process.env.REACT_APP_VERCEL_ENV === "development" ||
-  process.env.REACT_APP_ENVIRONMENT === "development" ||
-  process.env.NODE_ENV === "development";
+  import.meta.env.DEV ||
+  import.meta.env.NODE_ENV === "development";
 
 export const CLIENT_URL =
   IS_DEVELOPMENT

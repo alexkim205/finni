@@ -1,4 +1,4 @@
-import {CLIENT_URL} from "../helpers/constants";
+import { SERVER_URL } from '../helpers/constants';
 import {AgeRangeType, PatientType, ProviderType, StatusType} from "./types";
 import {objectToUrlParams} from "../helpers/utils";
 
@@ -19,7 +19,7 @@ export interface GetPatientRequest {
 export async function getPatients({filters}: GetPatientsRequest): Promise<PatientType[]> {
   const searchParams = new URLSearchParams(objectToUrlParams(filters ?? {}));
   const response = await fetch(
-    `${CLIENT_URL}/patients?${searchParams.toString()}`,
+    `${SERVER_URL}/patients?${searchParams.toString()}`,
   )
   if (!response.ok) {
     throw new Error('There was an error fetching patients')
@@ -29,7 +29,7 @@ export async function getPatients({filters}: GetPatientsRequest): Promise<Patien
 
 export async function getPatient({patientId}: GetPatientRequest): Promise<PatientType> {
   const response = await fetch(
-    `${CLIENT_URL}/patients/${patientId}`,
+    `${SERVER_URL}/patients/${patientId}`,
   )
   if (!response.ok) {
     throw new Error(`There was an error fetching patient: ${patientId}`)
@@ -39,7 +39,26 @@ export async function getPatient({patientId}: GetPatientRequest): Promise<Patien
 
 export async function getMe(): Promise<ProviderType> {
   const response = await fetch(
-    `${CLIENT_URL}/me`,
+    `${SERVER_URL}/me`,
+  )
+  if (!response.ok) {
+    throw new Error('There was an error fetching current user')
+  }
+  return await response.json()
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export async function login(props: LoginRequest): Promise<ProviderType> {
+  const response = await fetch(
+    `${SERVER_URL}/login`,
+    {
+      method: 'POST',
+      body: JSON.stringify(props)
+    },
   )
   if (!response.ok) {
     throw new Error('There was an error fetching current user')
