@@ -42,11 +42,13 @@ export function Dashboard() {
   const rows = useMemo(() => {
     return (listPatients.data?.data ?? []).map((patient) => ({
       key: patient.id,
-      fullName: [
-        patient.firstName,
-        patient.middleName ? `${patient.middleName?.charAt(0)}.` : '',
-        patient.lastName,
-      ].join(' '),
+      fullName: <span className="text-black font-bold">
+        {[
+          patient.firstName,
+          patient.middleName ? `${patient.middleName?.charAt(0)}.` : '',
+          patient.lastName,
+        ].join(' ')}
+      </span>,
       age: dayjs().diff(dayjs(patient.dateOfBirth), 'year'),
       status: <PatientStatusChip patient={patient} />,
       city: (

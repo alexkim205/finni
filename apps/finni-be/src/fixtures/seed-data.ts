@@ -29,3 +29,7 @@ function generateRandomPatient(id: number) {
 }
 
 export const patients = Array.from({ length: 50 }, (_, i) => generateRandomPatient(i + 1));
+
+// patients.forEach(p => {
+//   console.log(`('${p.firstName}','${p.middleName}','${p.lastName}','${p.dateOfBirth}','${p.status}','${JSON.stringify(p.address)}')`);
+// })

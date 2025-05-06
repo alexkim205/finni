@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 export function PatientStatusChip({ patient }: { patient: Pick<PatientType, "status"> }) {
   return (
     <Chip
+      size="sm"
       color={
         {
           [StatusType.Inquiry]: 'default',

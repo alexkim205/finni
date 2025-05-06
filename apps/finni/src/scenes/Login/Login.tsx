@@ -22,8 +22,6 @@ export function Login() {
     await login.mutateAsync(getValues());
   }
 
-  console.log("errors", errors)
-
   return (
     <div className="h-screen w-screen flex justify-center items-center bg-slate-100">
       <form

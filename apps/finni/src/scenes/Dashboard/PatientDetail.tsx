@@ -1,15 +1,19 @@
 import { Map, Marker } from 'pigeon-maps';
 import {
+  Button,
   Drawer,
   DrawerBody,
   DrawerContent,
+  DrawerFooter,
   DrawerHeader,
   Skeleton,
 } from '@heroui/react';
 import { PatientType } from '../../api/types';
-import { useGetPatientQuery } from '../../api/hooks';
+import { useDeletePatientQuery, useGetPatientQuery } from '../../api/hooks';
 import dayjs from 'dayjs';
 import { PatientStatusChip } from '../../components/PatientStatusChip';
+import { FaTrash } from 'react-icons/fa6';
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface PatientDetailProps {
   patientId: PatientType['id'] | null;
@@ -18,6 +22,16 @@ export interface PatientDetailProps {
 
 export function PatientDetail({ patientId, setPatientId }: PatientDetailProps) {
   const { data, isFetching } = useGetPatientQuery({ patientId });
+  const queryClient = useQueryClient();
+  const deletePatient = useDeletePatientQuery({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['patients', {}] }); // TODO: get actual query key here
+    },
+  });
+
+  async function onDeletePatient() {
+    await deletePatient.mutateAsync({ patientId });
+  }
 
   return data ? (
     <Drawer
@@ -25,8 +39,8 @@ export function PatientDetail({ patientId, setPatientId }: PatientDetailProps) {
       onClose={() => setPatientId(null)}
       size={'3xl'}
     >
-      <DrawerContent className="p-8">
-        {(onClose) => (
+      <DrawerContent className="p-8 flex flex-col">
+        {() => (
           <>
             <Skeleton isLoaded={!isFetching}>
               <DrawerHeader className="flex flex-col gap-1 text-3xl text-black">
@@ -36,7 +50,7 @@ export function PatientDetail({ patientId, setPatientId }: PatientDetailProps) {
               </DrawerHeader>
             </Skeleton>
             <Skeleton isLoaded={!isFetching}>
-              <DrawerBody>
+              <DrawerBody className="flex-grow">
                 <div className="grid grid-cols-4 gap-1">
                   <div className="font-bold col-span-1">Date of birth</div>
                   <div className="col-span-3">
@@ -58,7 +72,7 @@ export function PatientDetail({ patientId, setPatientId }: PatientDetailProps) {
                   </div>
                 </div>
 
-                <div className="rounded-lg overflow-hidden">
+                <div className="rounded-lg overflow-hidden mt-8">
                   <Map
                     height={300}
                     defaultCenter={[50.879, 4.6997]}
@@ -69,6 +83,16 @@ export function PatientDetail({ patientId, setPatientId }: PatientDetailProps) {
                 </div>
               </DrawerBody>
             </Skeleton>
+            <DrawerFooter>
+              <Button
+                color="danger"
+                className="text-white font-bold"
+                radius="sm"
+                onPress={onDeletePatient}
+              >
+                <FaTrash size={16} /> Delete Patient
+              </Button>
+            </DrawerFooter>
           </>
         )}
       </DrawerContent>

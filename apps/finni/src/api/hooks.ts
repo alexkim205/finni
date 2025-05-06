@@ -2,7 +2,7 @@ import {
   useMutation,
   UseMutationOptions,
   useQuery,
-  UseQueryOptions,
+  UseQueryOptions
 } from '@tanstack/react-query';
 import { login, getMe, logout } from './user';
 import { createPatient, deletePatient, getPatient, getPatients, updatePatient } from './patient';
@@ -39,31 +39,28 @@ export function useGetPatientQuery(
 }
 
 export function useCreatePatientQuery(
-  props: CreatePatientRequest,
   options?: UseMutationOptions<GetPatientResponse, Error, CreatePatientRequest>
 ) {
   return useMutation<GetPatientResponse, Error, CreatePatientRequest>({
-    mutationFn: () => createPatient(props),
+    mutationFn: (props: CreatePatientRequest) => createPatient(props),
     ...options,
   });
 }
 
 export function useUpdatePatientQuery(
-  props: UpdatePatientRequest,
   options?: UseMutationOptions<GetPatientResponse, Error, UpdatePatientRequest>
 ) {
   return useMutation<GetPatientResponse, Error, UpdatePatientRequest>({
-    mutationFn: () => updatePatient(props),
+    mutationFn: (props: UpdatePatientRequest) => updatePatient(props),
     ...options,
   });
 }
 
 export function useDeletePatientQuery(
-  props: DeletePatientRequest,
   options?: UseMutationOptions<ResponseMixin, Error, DeletePatientRequest>
 ) {
   return useMutation<ResponseMixin, Error, DeletePatientRequest>({
-    mutationFn: () => deletePatient(props),
+    mutationFn: (props: DeletePatientRequest) => deletePatient(props),
     ...options,
   });
 }

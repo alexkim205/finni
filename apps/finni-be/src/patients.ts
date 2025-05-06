@@ -1,67 +1,99 @@
 import express from 'express';
-import dayjs from 'dayjs';
-import { StatusType } from './types';
-import { patients } from './fixtures/seed-data';
+import { supabase } from './helpers/supabase';
 
-const router = express.Router()
-
-// Mock patients
-const patient = {
-  id: 1,
-  firstName: "Elizabeth",
-  middleName: "S",
-  lastName: "Kim",
-  dateOfBirth: dayjs("1998-04-13"),
-  status: StatusType.Active,
-  address: {
-    line1: "123 4th Ave",
-    line2: "",
-    city: "New York City",
-    state: "NY",
-    country: "USA",
-    zip: "11232",
-  }
-}
+const router = express.Router();
 
 // Get
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
+  const { data, error } = await supabase
+    .from('patients')
+    .select()
+    .eq('id', Number(req.params.id))
+    .maybeSingle();
+  if (error) {
+    res.json({
+      ok: false,
+      error,
+    });
+    return;
+  }
   res.json({
     ok: true,
-    data: patient
+    data,
   });
 });
 
 // List
-router.get('/', (req, res) => {
+router.get('/', async (_, res) => {
+  const { data, error } = await supabase.from('patients').select().eq('deleted', false);
+  if (error) {
+    res.json({
+      ok: false,
+      error,
+    });
+    return;
+  }
   res.json({
     ok: true,
-    data: patients
+    data,
   });
 });
-
 
 // Create
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  const { data, error } = await supabase
+    .from('patients')
+    .insert(req.body)
+    .select();
+  if (error) {
+    res.json({
+      ok: false,
+      error,
+    });
+    return;
+  }
   res.json({
     ok: true,
-    data: patient
+    data,
   });
 });
 
 // Update
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
+  const { data, error } = await supabase
+    .from('patients')
+    .update(req.body)
+    .eq('id', req.params.id)
+    .select();
+  if (error) {
+    res.json({
+      ok: false,
+      error,
+    });
+    return;
+  }
   res.json({
     ok: true,
-    data: patient
+    data,
   });
 });
 
-// Update
-router.delete('/:id', (req, res) => {
+// Delete
+router.delete('/:id', async (req, res) => {
+  const { error } = await supabase
+    .from('patients')
+    .update({"deleted": true})
+    .eq('id', req.params.id);
+  if (error) {
+    res.json({
+      ok: false,
+      error,
+    });
+    return;
+  }
   res.json({
     ok: true,
   });
 });
 
-
-export default router
+export default router;
